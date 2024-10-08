@@ -18,6 +18,12 @@ function initializeAdjacencyTable(tileTypes) {
     });
     return adjacencyTable;
 }
+function uniquePush(arr, item) {
+    if (!arr.includes(item)) {
+      arr.push(item);
+    }
+    return arr;
+  }
 function updateAdjacencyTable(grid, adjacencyTable) {
     const gridHeight = grid.length;
     const gridWidth = grid[0].length;
@@ -28,18 +34,19 @@ function updateAdjacencyTable(grid, adjacencyTable) {
             if (tile === "empty") {
                 return
             }
+            const adjacentRelation = adjacencyTable[tile]
             // Check adjacent tiles and update adjacency rules
             if (y > 0) {
-                adjacencyTable[tile].up.push(grid[y - 1][x]);
+                uniquePush(adjacentRelation.up, grid[y - 1][x]);
             }
             if (y < gridHeight - 1) {
-                adjacencyTable[tile].down.push(grid[y + 1][x]);
+                uniquePush(adjacentRelation.down, grid[y + 1][x]);
             }
             if (x > 0) {
-                adjacencyTable[tile].left.push(grid[y][x - 1]);
+                uniquePush(adjacentRelation.left, grid[y][x - 1]);
             }
             if (x < gridWidth - 1) {
-                adjacencyTable[tile].right.push(grid[y][x + 1]);
+                uniquePush(adjacentRelation.right, grid[y][x + 1]);
             }
         }
     }
