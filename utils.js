@@ -18,8 +18,33 @@ function initializeAdjacencyTable(tileTypes) {
     });
     return adjacencyTable;
 }
+function updateAdjacencyTable(grid, adjacencyTable) {
+    const gridHeight = grid.length;
+    const gridWidth = grid[0].length;
 
+    for (let y = 0; y < gridHeight; y++) {
+        for (let x = 0; x < gridWidth; x++) {
+            const tile = grid[y][x];
+            if (tile !== "empty") {
+                // Check adjacent tiles and update adjacency rules
+                if (y > 0 && grid[y - 1][x] !== "empty") {
+                    adjacencyTable[tile].up.push(grid[y - 1][x]);
+                }
+                if (y < gridHeight - 1 && grid[y + 1][x] !== "empty") {
+                    adjacencyTable[tile].down.push(grid[y + 1][x]);
+                }
+                if (x > 0 && grid[y][x - 1] !== "empty") {
+                    adjacencyTable[tile].left.push(grid[y][x - 1]);
+                }
+                if (x < gridWidth - 1 && grid[y][x + 1] !== "empty") {
+                    adjacencyTable[tile].right.push(grid[y][x + 1]);
+                }
+            }
+        }
+    }
+}
 module.exports = {
     initializeGrid,
-    initializeAdjacencyTable
+    initializeAdjacencyTable,
+    updateAdjacencyTable
 }
