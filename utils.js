@@ -11,7 +11,15 @@ function initializeGrid(worldWidth, worldHeight, tileWidth, tileHeight) {
     }
     return grid;
 }
+function initializeAdjacencyTable(tileTypes) {
+    const adjacencyTable = {};
+    tileTypes.forEach(type => {
+        adjacencyTable[type] = { up: [], down: [], left: [], right: [] };
+    });
+    return adjacencyTable;
+}
 
 module.exports = {
-    initializeGrid
+    initializeGrid,
+    initializeAdjacencyTable
 }

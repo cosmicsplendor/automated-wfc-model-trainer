@@ -1,7 +1,7 @@
 const walltiles = require("./data/walltiles.json")
 const backwalltiles = require("./data/backwalltiles.json")
 const data = require("./data/data1.json")
-const { initializeGrid } = require("./utils")
+const { initializeGrid, initializeAdjacencyTable } = require("./utils")
 
 const tileWidth = 48
 const tileHeight = 48
@@ -20,5 +20,7 @@ validTiles.forEach(tile => {
     tile.y -= minY
 })
 const height = maxY - minY
+const tileTypes = Array.from(new Set(Object.keys(validTiles)))
 
 const grid = initializeGrid(width, height, tileWidth, tileHeight)
+const adjacencyTable = initializeAdjacencyTable(tileTypes)
