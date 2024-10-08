@@ -20,10 +20,10 @@ function initializeAdjacencyTable(tileTypes) {
 }
 function uniquePush(arr, item) {
     if (!arr.includes(item)) {
-      arr.push(item);
+        arr.push(item);
     }
     return arr;
-  }
+}
 function updateAdjacencyTable(grid, adjacencyTable) {
     const gridHeight = grid.length;
     const gridWidth = grid[0].length;
@@ -51,8 +51,18 @@ function updateAdjacencyTable(grid, adjacencyTable) {
         }
     }
 }
+const populateGrid = (grid, tiles) => {
+    tiles.forEach(tile => {
+        let gridX = tile.x / tileSize;  // Calculate grid position based on x coordinate
+        let gridY = tile.y / tileSize;  // Calculate grid position based on y coordinate
+
+        // Place the tile's name in the appropriate grid cell
+        grid[gridY][gridX] = tile.name;
+    })
+}
 module.exports = {
     initializeGrid,
     initializeAdjacencyTable,
-    updateAdjacencyTable
+    updateAdjacencyTable,
+    populateGrid
 }
