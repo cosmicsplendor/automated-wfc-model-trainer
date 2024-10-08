@@ -1,3 +1,4 @@
+const fs = require("fs")
 const walltiles = require("./data/walltiles.json")
 const backwalltiles = require("./data/backwalltiles.json")
 const data = require("./data/data1.json")
@@ -20,10 +21,12 @@ validTiles.forEach(tile => {
     tile.y -= minY
 })
 const height = maxY + tileHeight - minY
-const tileTypes = Array.from(new Set(Object.keys(validTiles)))
+const tileTypes = walltiles
 
 const grid = initializeGrid(width, height, tileWidth, tileHeight)
 const adjacencyTable = initializeAdjacencyTable(tileTypes)
 
 populateGrid(grid, validTiles, tileWidth, tileHeight)
+fs.writeFileSync("./grid.json", JSON.stringify(grid))
 updateAdjacencyTable(grid, adjacencyTable)
+fs.writeFileSync("./adjacency.json", JSON.stringify(adjacencyTable))

@@ -32,7 +32,7 @@ function updateAdjacencyTable(grid, adjacencyTable) {
         for (let x = 0; x < gridWidth; x++) {
             const tile = grid[y][x];
             if (tile === "empty") {
-                return
+                continue
             }
             const adjacentRelation = adjacencyTable[tile]
             // Check adjacent tiles and update adjacency rules
