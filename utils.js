@@ -25,20 +25,21 @@ function updateAdjacencyTable(grid, adjacencyTable) {
     for (let y = 0; y < gridHeight; y++) {
         for (let x = 0; x < gridWidth; x++) {
             const tile = grid[y][x];
-            if (tile !== "empty") {
-                // Check adjacent tiles and update adjacency rules
-                if (y > 0 && grid[y - 1][x] !== "empty") {
-                    adjacencyTable[tile].up.push(grid[y - 1][x]);
-                }
-                if (y < gridHeight - 1 && grid[y + 1][x] !== "empty") {
-                    adjacencyTable[tile].down.push(grid[y + 1][x]);
-                }
-                if (x > 0 && grid[y][x - 1] !== "empty") {
-                    adjacencyTable[tile].left.push(grid[y][x - 1]);
-                }
-                if (x < gridWidth - 1 && grid[y][x + 1] !== "empty") {
-                    adjacencyTable[tile].right.push(grid[y][x + 1]);
-                }
+            if (tile === "empty") {
+                return
+            }
+            // Check adjacent tiles and update adjacency rules
+            if (y > 0) {
+                adjacencyTable[tile].up.push(grid[y - 1][x]);
+            }
+            if (y < gridHeight - 1) {
+                adjacencyTable[tile].down.push(grid[y + 1][x]);
+            }
+            if (x > 0) {
+                adjacencyTable[tile].left.push(grid[y][x - 1]);
+            }
+            if (x < gridWidth - 1) {
+                adjacencyTable[tile].right.push(grid[y][x + 1]);
             }
         }
     }
