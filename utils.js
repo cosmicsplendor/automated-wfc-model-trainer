@@ -51,10 +51,10 @@ function updateAdjacencyTable(grid, adjacencyTable) {
         }
     }
 }
-const populateGrid = (grid, tiles) => {
+const populateGrid = (grid, tiles, tileWidth, tileHeight) => {
     tiles.forEach(tile => {
-        let gridX = tile.x / tileSize;  // Calculate grid position based on x coordinate
-        let gridY = tile.y / tileSize;  // Calculate grid position based on y coordinate
+        let gridX = tile.x / tileWidth;  // Calculate grid position based on x coordinate
+        let gridY = tile.y / tileHeight;  // Calculate grid position based on y coordinate
 
         // Place the tile's name in the appropriate grid cell
         grid[gridY][gridX] = tile.name;
