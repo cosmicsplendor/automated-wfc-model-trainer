@@ -74,6 +74,11 @@ const exportAdjacencyTable = (filepath, table) => {
         for (const direction in value) {
             const weightMap = value[direction]
             newValue[direction] = Object.entries(weightMap).map(([tile, weight]) => ({ tile, weight }))
+            newValue[direction].sort((a, b) => b.weight - a.weight)
+            const totalWeight = newValue[direction].reduce((a, x) => a + x.weight, 0)
+            newValue[direction] = newValue[direction].map(x => {
+                return { ...x, weight: x.weight / totalWeight}
+            })
         }
         return [ key, newValue ]
     })
