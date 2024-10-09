@@ -36,9 +36,9 @@ function updateAdjacencyTable(grid, adjacencyTable) {
     for (let y = 0; y < gridHeight; y++) {
         for (let x = 0; x < gridWidth; x++) {
             const tile = grid[y][x];
-            if (tile === "empty") {
-                continue;
-            }
+            // if (tile === "empty") {
+            //     continue;
+            // }
             const adjacentRelation = adjacencyTable[tile];
 
             // Check adjacent tiles and update adjacency rules
@@ -67,7 +67,7 @@ const populateGrid = (grid, tiles, tileWidth, tileHeight) => {
         grid[gridY][gridX] = tile.name;
     })
 }
-const exportAdjacencyTable = (table, filepath) => {
+const exportAdjacencyTable = (filepath, table) => {
     const newEntries = Object.keys(table).map(key => {
         const value = table[key]
         const newValue = {}
