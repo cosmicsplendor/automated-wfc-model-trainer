@@ -69,7 +69,7 @@ const populateGrid = (grid, tiles, tileWidth, tileHeight) => {
 }
 const identity = data => data
 const defaultPostProcessor = {}
-const exportAdjacencyTable = (filepath, table, postProcessData) => {
+const exportAdjacencyTable = (filepath, table, postProcessData={}) => {
     const newEntries = Object.keys(table).map(key => {
         const value = table[key]
         const newValue = {}

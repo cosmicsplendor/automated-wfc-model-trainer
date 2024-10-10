@@ -1,13 +1,14 @@
 const fs = require("fs")
 const walltiles = require("./data/walltiles.json")
 const backwalltiles = require("./data/backwalltiles.json")
-const data = require("./data/data1.json")
+const data = Array(10).fill(0).map((_, i) => require(`./data/data${i+1}.json`))
 const { initializeGrid, initializeAdjacencyTable, populateGrid, updateAdjacencyTable, exportAdjacencyTable } = require("./utils")
+const postProcessor = require("./postProcessor")
 
 const tileWidth = 48
 const tileHeight = 48
 
-const generateGrid = data => {
+const augmentModel = (adjacencyTable, data) => {
     const tiles = data.fgTiles.concat(data.tiles)
     const maxY = tiles.reduce((maxY, tile) => Math.max(maxY, tile.y), 0)
     const gridOffset = -maxY % 48
@@ -26,12 +27,11 @@ const generateGrid = data => {
     const grid = initializeGrid(width, height, tileWidth, tileHeight)
 
     populateGrid(grid, validTiles, tileWidth, tileHeight)
-    return grid
     // fs.writeFileSync("./grid.json", JSON.stringify(grid))
+    updateAdjacencyTable(grid, adjacencyTable)
+    return grid
 }
 
-const tileTypes = ["empty", ...walltiles]
-const adjacencyTable = initializeAdjacencyTable(tileTypes)
-const grid = generateGrid(data)
-updateAdjacencyTable(grid, adjacencyTable)
-exportAdjacencyTable("./adjacency.json", adjacencyTable)
+const adjacencyTable = initializeAdjacencyTable(["empty", ...walltiles])
+data.forEach(d => augmentModel(adjacencyTable, d))
+exportAdjacencyTable("./adjacency.json", adjacencyTable, postProcessor)
