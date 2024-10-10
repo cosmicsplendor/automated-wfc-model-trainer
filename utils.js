@@ -60,8 +60,8 @@ function updateAdjacencyTable(grid, adjacencyTable) {
 
 const populateGrid = (grid, tiles, tileWidth, tileHeight) => {
     tiles.forEach(tile => {
-        let gridX = tile.x / tileWidth;  // Calculate grid position based on x coordinate
-        let gridY = tile.y / tileHeight;  // Calculate grid position based on y coordinate
+        let gridX = Math.round(tile.x / tileWidth);  // Calculate grid position based on x coordinate
+        let gridY = Math.round(tile.y / tileHeight);  // Calculate grid position based on y coordinate
 
         // Place the tile's name in the appropriate grid cell
         grid[gridY][gridX] = tile.name;
@@ -69,24 +69,23 @@ const populateGrid = (grid, tiles, tileWidth, tileHeight) => {
 }
 const identity = data => data
 const defaultPostProcessor = {}
-const exportAdjacencyTable = (filepath, table, postProcessData={}) => {
+const exportAdjacencyTable = (filepath, table, postProcessors = {}) => {
     const newEntries = Object.keys(table).map(key => {
         const value = table[key]
         const newValue = {}
         for (const direction in value) {
             const weightMap = value[direction]
-            const postProcessor = (postProcessData[key] ?? defaultPostProcessor)
+            const postProcessor = (postProcessors[key] ?? defaultPostProcessor)
             const postProcess = postProcessor[direction] ?? postProcessor.default ?? identity
-
             newValue[direction] = Object.entries(weightMap).map(([tile, weight]) => ({ tile, weight }))
             newValue[direction] = postProcess(newValue[direction])
             newValue[direction].sort((a, b) => b.weight - a.weight)
             const totalWeight = newValue[direction].reduce((a, x) => a + x.weight, 0)
             newValue[direction] = newValue[direction].map(x => {
-                return { ...x, weight: x.weight / totalWeight}
+                return { ...x, weight: x.weight / totalWeight }
             })
         }
-        return [ key, newValue ]
+        return [key, newValue]
     })
     const exportData = Object.fromEntries(newEntries)
     fs.writeFileSync(filepath, JSON.stringify(exportData))
