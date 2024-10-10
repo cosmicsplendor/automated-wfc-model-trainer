@@ -67,13 +67,19 @@ const populateGrid = (grid, tiles, tileWidth, tileHeight) => {
         grid[gridY][gridX] = tile.name;
     })
 }
-const exportAdjacencyTable = (filepath, table) => {
+const identity = data => data
+const defaultPostProcessor = {}
+const exportAdjacencyTable = (filepath, table, postProcessData) => {
     const newEntries = Object.keys(table).map(key => {
         const value = table[key]
         const newValue = {}
         for (const direction in value) {
             const weightMap = value[direction]
+            const postProcessor = (postProcessData[key] ?? defaultPostProcessor)
+            const postProcess = postProcessor[direction] ?? postProcessor.default ?? identity
+
             newValue[direction] = Object.entries(weightMap).map(([tile, weight]) => ({ tile, weight }))
+            newValue[direction] = postProcess(newValue[direction])
             newValue[direction].sort((a, b) => b.weight - a.weight)
             const totalWeight = newValue[direction].reduce((a, x) => a + x.weight, 0)
             newValue[direction] = newValue[direction].map(x => {
